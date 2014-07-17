@@ -11,13 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140716162532) do
+ActiveRecord::Schema.define(version: 20140717090642) do
+
+  create_table "categories", force: true do |t|
+    t.string "name"
+  end
 
   create_table "events", force: true do |t|
     t.string  "title"
     t.text    "description"
     t.integer "reg_count"
     t.decimal "registration_fee"
+    t.integer "category_id"
   end
 
 end

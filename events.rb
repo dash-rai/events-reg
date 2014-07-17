@@ -4,25 +4,37 @@ require 'haml'
 
 set :database, "sqlite3:reg.db"
 
-#setup activerecord class
+class Event < ActiveRecord::Base
+  validates :title, presence: true
+end
 
-# probably has too many methods. You might want to cut down some of the possibilities that the admin has.
+class Category < ActiveRecord::Base
+  has_many :events
+end
+
+before do
+  content_type :json
+end
 
 get '/' do
   # brief description among other things.
-  "hello"
+  { message: "hello" }.to_json
 end
 
 get '/events' do
   # list all events
+  @events = Event.order(title: :asc)
+  @events.to_json
 end
 
 get '/events/categories' do
   # list all categories
+  Category.order(name: :asc).to_json
 end
 
 get '/events/categories/:category' do
   # list events in this category
+  Event.where(category_id: 1).to_json
 end
 
 post '/events' do
@@ -43,6 +55,7 @@ end
 
 get '/events/:id' do
   # get particular event
+  Event.find(params[:id]).to_json
 end
 
 post '/categories' do
