@@ -5,10 +5,11 @@ require 'haml'
 set :database, "sqlite3:reg.db"
 
 class Event < ActiveRecord::Base
-  validates :title, presence: true
+  validates :name, presence: true
 end
 
 class Category < ActiveRecord::Base
+  validates :name, presence: true
   has_many :events
 end
 
@@ -23,7 +24,7 @@ end
 
 get '/events' do
   # list all events
-  @events = Event.order(title: :asc)
+  @events = Event.order(name: :asc)
   @events.to_json
 end
 
