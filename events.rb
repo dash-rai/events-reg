@@ -35,18 +35,26 @@ end
 
 get '/events/categories/:category' do
   # list events in this category
-  Event.where(category_id: 1).to_json
+  Event.where(category_id: params[:category]).to_json
 end
 
 post '/events' do
   # admins get to make new events
+  data = params[:post]          # get all the parameters
+  Event.new(data).save.to_s     # returns true is save to database works, else false.
 end
 
 put '/events/:id' do
   # admins get to edit events as well
+  event = Event.find(params[:id])
+  begin
+    event.update(params[:post])
+  rescue => e
+    e.message.to_json
+  end
 end
 
-delete '/events' do
+delete '/events/:id' do
   # and delete them
 end
 
